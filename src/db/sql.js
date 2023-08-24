@@ -15,9 +15,9 @@ const config = {
 
 async function connectAndQuery(query) {
   try {
-    await sql.connect(config);
+    const pool = await new sql.ConnectionPool(config).connect()
     await new sql.Request()
-    const result = await sql.query(query);
+    const result = await pool.request().query(query);
     sql.close();
     return result.recordset;
   } catch (error) {
